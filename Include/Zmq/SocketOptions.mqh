@@ -172,9 +172,9 @@ public:
 
    //--- for curve key
 #define SOCKOPT_CURVE_KEY(KeyType,Macro) \
-   bool              getCurve##KeyType##Key(uchar &key[32]) {size_t len=32; return getOption(Macro,key,len);} \
+   bool              getCurve##KeyType##Key(uchar &key[]) {size_t len=32; return getOption(Macro,key,len);} \
    bool              getCurve##KeyType##Key(string &key) {return getStringOption(Macro,key,41);} \
-   bool              setCurve##KeyType##Key(const uchar &key[32]) {return setOption(Macro,key,32);} \
+   bool              setCurve##KeyType##Key(const uchar &key[]) {return setOption(Macro,key,32);} \
    bool              setCurve##KeyType##Key(string key) {return setStringOption(Macro,key);}
 
    SOCKOPT_GET(int,Type,ZMQ_TYPE)
