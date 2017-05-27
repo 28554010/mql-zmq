@@ -3,8 +3,6 @@
 //|                                          Copyright 2016, Li Ding |
 //|                                            dingmaotu@hotmail.com |
 //+------------------------------------------------------------------+
-#property copyright "Copyright 2016, Li Ding"
-#property link      "dingmaotu@hotmail.com"
 #property strict
 
 #include "Common.mqh"
@@ -102,7 +100,6 @@ int zmq_proxy_steerable(intptr_t frontend_ref,intptr_t backend_ref,intptr_t capt
 class Socket: public SocketOptions
   {
 public:
-   //--- it is not recommended to use this constructor directly: use Context factory methods instead
                      Socket(const Context &ctx,int type):SocketOptions(zmq_socket(ctx.ref(),type)){}
    virtual          ~Socket() {if(0!=zmq_close(m_ref)){Debug(StringFormat("Failed to close socket 0x%0X",m_ref));}}
 
@@ -190,7 +187,7 @@ bool Socket::recv(uchar &buf[],bool nowait=false)
   {
    int options=0;
    if(nowait) options|=ZMQ_DONTWAIT;
-   return 0==zmq_recv(m_ref,buf,ArraySize(buf),options);
+   return -1!=zmq_recv(m_ref,buf,ArraySize(buf),options);
   }
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -200,7 +197,7 @@ bool Socket::send(const uchar &buf[],bool nowait=false,bool more=false)
    int options=0;
    if(nowait) options|=ZMQ_DONTWAIT;
    if(more) options|=ZMQ_SNDMORE;
-   return 0==zmq_send(m_ref,buf,ArraySize(buf),options);
+   return -1!=zmq_send(m_ref,buf,ArraySize(buf),options);
   }
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -210,7 +207,7 @@ bool Socket::sendConst(const uchar &buf[],bool nowait=false,bool more=false)
    int options=0;
    if(nowait) options|=ZMQ_DONTWAIT;
    if(more) options|=ZMQ_SNDMORE;
-   return 0==zmq_send_const(m_ref,buf,ArraySize(buf),options);
+   return -1!=zmq_send_const(m_ref,buf,ArraySize(buf),options);
   }
 //+------------------------------------------------------------------+
 //| Send a zmq_msg_t through a socket                                |
